@@ -1,33 +1,22 @@
-import AddItemsForm from "../components/AddItemsForm";
-import Footer from "../components/Footer";
-import Header from "../components/Header";
-import ItemsList from "../components/ItemsList";
-import React from 'react'
+import React, { useState } from 'react'
+import FriendsList from '../components/FriendsList'
+
 
 export default function App() {
-  const [itemsList, setItemsList] = React.useState([])
-  
-  function handleClear() {
-    const isConfirmed = confirm("Are you sure you want to clear all the items in the list? \nClick either OK or Cancel.");
-    isConfirmed ? setItemsList([]) : ''
+  const [friendList, setFriendList] = useState([])
+  const [show, setShow] = useState(false)
+    const btnText = show ? 'Close' : 'Add Friend';
+    function handleDisplay() {
+        setShow(!show)
+    }
+  function handleAddNewFriend(newFriend) {
+    setFriendList([...friendList, {name: newFriend.name, image: newFriend.image}])
   }
-function togglePacked(id) {
-    setItemsList((itemsList) => itemsList.map((item) => item.id === id ? {...item, packed: !item.packed} : item))
-  }
-
-  function handleDeleteItems(id) {
-    setItemsList((itemsList) => itemsList.filter((item) => item.id !== id))
-  }
-
-  function handleAddItemsList(item) {
-    setItemsList((itemsList) => [...itemsList, item])
-  }
+ 
   return (
     <div>
-      <Header />
-      <AddItemsForm onAddItems={handleAddItemsList} />
-      <ItemsList itemsList={itemsList} onDeleteItems={handleDeleteItems} onTogglePacked={togglePacked} onHandleClear={handleClear} />
-      <Footer itemsList={itemsList} />
+      <FriendsList friendList={friendList} show={show} onHandleAddNewFriend={handleAddNewFriend}/>
+      <button className='bg-amber-500 px-12 m-2 rounded-md text-white' onClick={handleDisplay}>{btnText}</button>
     </div>
   )
 }
