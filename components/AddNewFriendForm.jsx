@@ -9,7 +9,7 @@ export default function AddNewFriendForm({onHandleAddNewFriend}) {
 
 
   function handleChange(e) {
-    console.log(e.target.value);
+    //console.log(e.target.value);
 
     setFormFields({
       ...formFields,
@@ -34,7 +34,7 @@ export default function AddNewFriendForm({onHandleAddNewFriend}) {
     setFormFields({name: '', image: ''})
   }
   return (
-      <form className='bg-yellow-100 w-1/5 py-2' onSubmit={handleSubmit}>
+      <form className='bg-yellow-100 w-full py-2 mx-2' onSubmit={handleSubmit}>
           <div className='rounded-sm'>
           <label className='m-2'>👯 Friend name</label>
         <input className='rounded-lg py-1 m-2' type="text" value={formFields.name} onChange={handleChange} name="name" />

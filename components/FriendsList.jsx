@@ -1,14 +1,14 @@
 import React from 'react'
-import Friends from './Friends'
+import Friend from './Friend'
 import PropTypes from 'prop-types'
 import AddNewFriendForm from './AddNewFriendForm';
 
-export default function FriendsList({ friendList, show, onHandleAddNewFriend }) {
+export default function FriendsList({ friendList, isSelected, show, onHandleAddNewFriend, onHandleSelect }) {
 
   return (
-      <div>
+      <div className='mx-2'>
           {friendList.map((friend, i) => (
-              <Friends  key={i} friend={friend}/>
+              <Friend  key={i} friend={friend} isSelected={isSelected} onHandleSelect={onHandleSelect}/>
           ))}
           {show && 
           <>
@@ -22,6 +22,8 @@ export default function FriendsList({ friendList, show, onHandleAddNewFriend }) 
 FriendsList.propTypes = {
     show: PropTypes.bool,
     friendList: PropTypes.array,
+    isSelected: PropTypes.string,
     onAddFriend: PropTypes.func,
-    onHandleAddNewFriend: PropTypes.func
+    onHandleAddNewFriend: PropTypes.func,
+    onHandleSelect: PropTypes.func
 }
