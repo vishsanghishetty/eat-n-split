@@ -1,36 +1,51 @@
 import React, { useState } from 'react'
 import FriendsList from '../components/FriendsList'
-import SplitBill from '../components/SplitBill';
+import SplitBill from '../components/FormSplitBill.jsx';
+import list from '../src/initialList.js';
+import Button from '../components/Button.jsx';
+import AddNewFriendForm from '../components/AddNewFriendForm.jsx';
 
 
 export default function App() {
-  const [friendList, setFriendList] = useState([])
-  const [show, setShow] = useState(false)
-  const btnText = show ? 'Close' : 'Add Friend';
-  const [selectedFriend, setSelectedFriend] = useState(false)
-  const isSelected = selectedFriend ? 'Close' : 'Select';
-    function handleDisplay() {
-        setShow(!show)
+  const [friendList, setFriendList] = useState(list)
+  const [showAddFriend, setShowAddFriend] = useState(false)
+  const btnText = showAddFriend ? 'Close' : 'Add Friend';
+  const [selectedFriend, setSelectedFriend] = useState(null);
+  
+  function handleSplitBill(value) {
+    console.log(value);
+    
+    setFriendList((friendList) => friendList.map((friend) => {
+      //if friend.id matches selectedFriend.id, the function returns a new object with the updated balance.
+    return friend.id === selectedFriend.id ? ({...friend, balance: friend.balance + value}) : friend
+    }
+    ))
+    setSelectedFriend(null);
+  }
+  function handleClick() {
+        setShowAddFriend(!showAddFriend)
     }
   function handleAddNewFriend(newFriend) {
-    setFriendList([...friendList, {name: newFriend.name, image: newFriend.image}])
+    setFriendList([...friendList, newFriend])
   }
 
-  function handleDisplaySelectFriend(friendName) {
-    console.log('You clicked on ' + friendName);
-    // setSelectedFriend(!selectedFriend);
-
-  
+  function handleSelection(newFriend) {
+    setSelectedFriend((prev) => prev?.id === newFriend?.id ? null : newFriend) 
   }
- 
+
+
   return (
     <div className='flex'>
       <div>
-      <FriendsList friendList={friendList} show={show} isSelected={isSelected} onHandleAddNewFriend={handleAddNewFriend} onHandleSelect={handleDisplaySelectFriend}/>
-        <button className='bg-amber-500 px-10 m-2 py-1 rounded-md text-white' onClick={handleDisplay}>{btnText}</button>
-        </div>
+      <h5>Eat and split the bill</h5>
+      </div>
+      <div>
+        <FriendsList friendList={friendList} selectedFriend={selectedFriend} onSelection={handleSelection} />
+        <Button handleClick={handleClick}>{btnText}</Button>
+        {showAddFriend && <AddNewFriendForm onHandleAddNewFriend={handleAddNewFriend} showAddFriend={showAddFriend}/>}
+      </div>
       <div className='py-4 place-items-center w-full'>
-        {selectedFriend && <SplitBill/>}
+        {selectedFriend && <SplitBill selectedFriend={selectedFriend} onSplitBill={handleSplitBill} />}
       </div>
     </div>
   )
