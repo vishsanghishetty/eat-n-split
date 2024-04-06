@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
+import Button from './Button'
 
 export default function AddNewFriendForm({onHandleAddNewFriend}) {
   const [formFields, setFormFields] = useState({ 
     name: '',
-    image: ''
+    image: 'https://i.pravatar.cc/75'
   })
 
 
@@ -14,7 +15,8 @@ export default function AddNewFriendForm({onHandleAddNewFriend}) {
     setFormFields({
       ...formFields,
       //[e.target.name] -> This refers to the name attribute of the HTML element that triggered the event e,
-      //So, e.target.name retrieves the computed value of the name attribute of the element. name: value and image: value
+      //So, e.target.name retrieves the computed value of the name attribute of the element. name and image are the corresponding
+      //name attributes of the input elements. name="name" and name="image"
 
       // e.target.value -> This retrieves the current value of the HTML element that triggered the event.
       // name: computed value and image: computed value
@@ -24,14 +26,15 @@ export default function AddNewFriendForm({onHandleAddNewFriend}) {
   }
 
   function handleSubmit(e) {
+    const id = crypto.randomUUID();
     e.preventDefault();
     const newFriend = {
-      id: Date.now(),
+      id: id,
       name: formFields.name,
-      image: formFields.image
+      image: `${formFields.image}?u=${id}`
     }
     onHandleAddNewFriend(newFriend)
-    setFormFields({name: '', image: ''})
+    setFormFields({name: '', image: formFields.image })
   }
   return (
       <form className='bg-yellow-100 w-full py-2 mx-2' onSubmit={handleSubmit}>
@@ -44,12 +47,13 @@ export default function AddNewFriendForm({onHandleAddNewFriend}) {
         <input className='rounded-md m-2 py-1' type="text" value={formFields.image} onChange={handleChange} name="image" />
       </div>
       <div className='flex justify-end'>
-        <button className='bg-amber-500 px-10 m-2 py-1 align-right rounded-md text-white'>Add</button>
+        <Button className='bg-amber-500 px-10 m-2 py-1 align-right rounded-md text-white' onHandleAddNewFriend={onHandleAddNewFriend}>Add</Button>
+        
         </div>
     </form>
   )
 }
 
 AddNewFriendForm.propTypes = {
-onHandleAddNewFriend: PropTypes.func
+  onHandleAddNewFriend: PropTypes.func.isRequired,
 }
