@@ -1,29 +1,21 @@
 import React from 'react'
 import Friend from './Friend'
 import PropTypes from 'prop-types'
-import AddNewFriendForm from './AddNewFriendForm';
 
-export default function FriendsList({ friendList, isSelected, show, onHandleAddNewFriend, onHandleSelect }) {
+export default function FriendsList({ friendList, selectedFriend, onSelection }) {
 
   return (
       <div className='mx-2'>
           {friendList.map((friend, i) => (
-              <Friend  key={i} friend={friend} isSelected={isSelected} onHandleSelect={onHandleSelect}/>
+              <Friend  key={i} friend={friend} selectedFriend={selectedFriend}  onSelection={onSelection}/>
           ))}
-          {show && 
-          <>
-          <AddNewFriendForm onHandleAddNewFriend={onHandleAddNewFriend}/>
-          </>
-          }
       </div>
   )
 }
 
 FriendsList.propTypes = {
-    show: PropTypes.bool,
     friendList: PropTypes.array,
-    isSelected: PropTypes.string,
+    selectedFriend: PropTypes.object,
     onAddFriend: PropTypes.func,
-    onHandleAddNewFriend: PropTypes.func,
-    onHandleSelect: PropTypes.func
+    onSelection: PropTypes.func
 }
